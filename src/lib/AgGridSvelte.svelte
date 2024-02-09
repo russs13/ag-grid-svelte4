@@ -9,16 +9,22 @@
   import {
     ComponentUtil,
     Grid,
+    createGrid,
     type GridOptions,
     type GridParams,
     type GridReadyEvent,
-    type Module
+    type Module,
   } from 'ag-grid-community';
   import { onMount } from 'svelte';
   import {
     SvelteFrameworkComponentWrapper,
     SvelteFrameworkOverrides
   } from './SvelteFrameworkComponentWrapper';
+
+          
+  import { ModuleRegistry } from '@ag-grid-community/core';
+  import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+  import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 
   type TData = $$Generic;
   type Options = GridOptions<TData>;
@@ -370,7 +376,7 @@
 
   onMount(() => {
     const _onGridReady = gridOptions.onGridReady;
-    gridOptions = ComponentUtil.copyAttributesToGridOptions(gridOptions, {
+    gridOptions = ComponentUtil.combineAttributesAndGridOptions(gridOptions, {
       ...$$props,
       onGridReady(event: GridReadyEvent<TData>) {
         ready = true;
@@ -386,7 +392,8 @@
         frameworkComponentWrapper: new SvelteFrameworkComponentWrapper()
       },
       frameworkOverrides: new SvelteFrameworkOverrides(),
-      modules
+      modules: [...modules, RowGroupingModule]
+      // modules: modules,
     };
 
     const grid = new Grid(eGui, gridOptions, gridParams);
@@ -406,7 +413,6 @@
     setters[setterName]?.(formattedProp);
     gridOptions[key] = formattedProp;
   };
-
   // Tooltips (Update first?
   $: updateProp('enableBrowserTooltips', enableBrowserTooltips);
   $: updateProp('tooltipShowDelay', tooltipShowDelay);

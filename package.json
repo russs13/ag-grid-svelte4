@@ -10,8 +10,8 @@
     "@sveltejs/package": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
-    "ag-grid-community": "^30.0.0",
-    "ag-grid-enterprise": "^30.0.0",
+    "ag-grid-community": "^31.0.3",
+    "ag-grid-enterprise": "^31.0.3",
     "commit-and-tag-version": "^11.2.1",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
@@ -66,5 +66,10 @@
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
     }
+  },
+  "dependencies": {
+    "@ag-grid-community/client-side-row-model": "^31.0.3",
+    "@ag-grid-community/core": "^31.0.3",
+    "@ag-grid-enterprise/row-grouping": "^31.0.3"
   }
 }

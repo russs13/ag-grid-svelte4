@@ -3,7 +3,11 @@
   import 'ag-grid-community/styles/ag-grid.css';
   import 'ag-grid-community/styles/ag-theme-alpine.css';
   import Header from '../components/Header.svelte';
-  import type { ColDef } from 'ag-grid-community';
+  import { ModuleRegistry, type ColDef } from 'ag-grid-community';
+  import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
+
+  ModuleRegistry.registerModules([ RowGroupingModule ]);
+
 
   type Data = { make: string; model: string; price: number };
 
@@ -14,6 +18,22 @@
   ];
 
   let columnDefs: ColDef<Data>[] = [{ field: 'make' }, { field: 'model' }, { field: 'price' }];
+
+  const gridOptions = {
+      columnDefs: [{ field: 'make', enableRowGroup: true }, { field: 'model', enableRowGroup: true }, { field: 'price' }],
+      defaultColDef: {
+        flex: 1,
+        minWidth: 100,
+      },
+      autoGroupColumnDef: {
+        minWidth: 200,
+      },
+      suppressDragLeaveHidesColumns: true,
+      suppressMakeColumnVisibleAfterUnGroup: true,
+      suppressRowGroupHidesColumns: true,
+      rowGroupPanelShow: 'always',
+  };
+    
 
   function addRow() {
     rowData = rowData.concat({
@@ -29,7 +49,7 @@
   <h1>Svelte AG Grid</h1>
   <button on:click={addRow}>Add Row</button>
   <div style:height="500px" class="ag-theme-alpine">
-    <AgGridSvelte {rowData} {columnDefs} />
+    <AgGridSvelte {rowData} {gridOptions} />
   </div>
 </main>
 
